@@ -1,5 +1,22 @@
+import os
+import pathlib
 from openai import OpenAI
 import json
+
+
+def load_dotenv():
+    env_path = pathlib.Path(__file__).parent / ".env"
+    if env_path.exists():
+        for line in env_path.read_text().splitlines():
+            if not line or line.strip().startswith("#"):
+                continue
+            key, sep, value = line.partition("=")
+            if sep:
+                os.environ.setdefault(key.strip(), value.strip())
+
+
+load_dotenv()
+
 
 def process_code(code_input, language, optimization_goal):
     """
@@ -7,12 +24,13 @@ def process_code(code_input, language, optimization_goal):
     """
     from prompts import get_system_prompt, get_refactoring_prompt
     
-    
-    my_api_key = "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" 
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        raise RuntimeError("OPENAI_API_KEY not set. Add it to .env or your environment.")
     
     client = OpenAI(
         base_url="https://api.groq.com/openai/v1",
-        api_key=my_api_key
+        api_key=api_key
     )
     
     

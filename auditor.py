@@ -1,8 +1,27 @@
+import os
+import pathlib
 from openai import OpenAI
 import json
 
-client = OpenAI(base_url="https://api.groq.com/openai/v1", api_key="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")
 
+def load_dotenv():
+    env_path = pathlib.Path(__file__).parent / ".env"
+    if env_path.exists():
+        for line in env_path.read_text().splitlines():
+            if not line or line.strip().startswith("#"):
+                continue
+            key, sep, value = line.partition("=")
+            if sep:
+                os.environ.setdefault(key.strip(), value.strip())
+
+
+load_dotenv()
+
+api_key = os.getenv("OPENAI_API_KEY")
+if not api_key:
+    raise RuntimeError("OPENAI_API_KEY not set. Add it to .env or your environment.")
+
+client = OpenAI(base_url="https://api.groq.com/openai/v1", api_key=api_key)
 def analyze_code(code, optimization_type, language="Python"):
     
 

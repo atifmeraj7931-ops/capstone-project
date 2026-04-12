@@ -1,4 +1,4 @@
-import time  # ⏱️ ADDED: The built-in time module
+import time                                      
 import streamlit as st
 from auditor import analyze_code
 from engine import RefactorEngine
@@ -9,7 +9,7 @@ st.set_page_config(page_title="Refactor Engine AI", layout="wide")
 st.title("🛡️ Hybrid Refactoring Engine")
 st.markdown("### AI Diagnosis • Deterministic Execution • Efficiency Scoring")
 
-# --- SIDEBAR CONFIGURATION ---
+                               
 with st.sidebar:
     st.header("⚙️ Control Panel")
     language = st.selectbox("Language", ["Python", "JavaScript", "Java", "C++"])
@@ -18,7 +18,7 @@ with st.sidebar:
         ["Readability & Clean Code", "Performance (Time Complexity)", "Memory Efficiency (Space)", "Security Hardening"]
     )
 
-# --- INPUT SECTION ---
+                       
 col1, col2 = st.columns([1, 1])
 
 with col1:
@@ -27,12 +27,12 @@ with col1:
 
 analyze_click = st.button("🚀 Analyze & Refactor Code", type="primary", use_container_width=True)
 
-# --- AI EXECUTION & STATE SAVING ---
+                                     
 if analyze_click:
     if not code_input:
         st.warning("Please paste some code first.")
     else:
-        # ⏱️ START AI STOPWATCH
+                               
         ai_start_time = time.time()
         
         with st.spinner("🧠 AI Architect is analyzing code structure..."):
@@ -50,17 +50,17 @@ if analyze_click:
             engine = RefactorEngine(code_input)
             new_code, logs = engine.apply_updates(plan)
             
-            # ⏱️ STOP AI STOPWATCH & CALCULATE
+                                              
             ai_end_time = time.time()
             ai_latency = ai_end_time - ai_start_time
             
-            # SAVE TO MEMORY (Included the new timer!)
+                                                      
             st.session_state['new_code'] = new_code
             st.session_state['plan'] = plan
             st.session_state['orig_code'] = code_input
-            st.session_state['ai_latency'] = ai_latency  # ⏱️ Save the time to memory
+            st.session_state['ai_latency'] = ai_latency                              
 
-# --- DISPLAY RESULTS & SANDBOX ---
+                                   
 if 'new_code' in st.session_state:
     
     plan = st.session_state['plan']
@@ -82,18 +82,18 @@ if 'new_code' in st.session_state:
     
     delta_val = new - orig
 
-    # ⏱️ UPDATED METRICS ROW: Added a 4th column for the Time Metric!
+                                                                     
     m_col1, m_col2, m_col3, m_col4 = st.columns([1, 1, 1, 2])
     m_col1.metric("Original Score", f"{orig}/100")
     m_col2.metric("Refactored Score", f"{new}/100", delta=delta_val)
-    m_col3.metric("🤖 AI Response Time", f"{ai_latency:.2f}s") # ⏱️ Displays the AI Time!
+    m_col3.metric("🤖 AI Response Time", f"{ai_latency:.2f}s")                           
     m_col4.info(f"**Architect's Notes:**\n\n{plan.get('explanation', 'No notes provided.')}")
 
     with col2:
         st.subheader("✨ Refactored Code")
         st.code(new_code, language=language.lower())
 
-    # --- LIVE EXECUTION SANDBOX ---
+                                    
     st.divider()
     st.subheader("🧪 Automated Regression Testing (Local testing)")
     st.markdown("Append function calls or print statements to test functional equivalence.")
@@ -119,7 +119,7 @@ if 'new_code' in st.session_state:
         full_original_code = orig_code + "\n\n" + test_cases
         full_refactored_code = new_code + "\n\n" + test_cases
 
-        # ⏱️ START SANDBOX STOPWATCH
+                                    
         exec_start_time = time.time()
 
         out_col1, out_col2 = st.columns(2)
@@ -136,7 +136,7 @@ if 'new_code' in st.session_state:
                 new_output = execute_code(full_refactored_code, language, user_stdin)
             st.code(new_output, language="text")
             
-        # ⏱️ STOP SANDBOX STOPWATCH & DISPLAY
+                                             
         exec_end_time = time.time()
         exec_latency = exec_end_time - exec_start_time
         st.metric(label="⚡ Local Sandbox Execution Time (Compiled Both)", value=f"{exec_latency:.4f} seconds")

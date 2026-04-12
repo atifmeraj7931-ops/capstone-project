@@ -3,13 +3,13 @@ import os
 import sys
 import io
 
-# NOTICE: The 4th argument 'language' is required here
+                                                      
 def run_test_case(original_code, refactored_code, test_input, language):
     """
     Runs code in Python, JS, Java, or C++ using system tools.
     """
 
-    # --- 1. CODE WRAPPERS ---
+                              
     def prepare_code(code, input_call, lang):
         if lang == "Python":
             return code + f"\nprint({input_call})"
@@ -39,7 +39,7 @@ def run_test_case(original_code, refactored_code, test_input, language):
             """
         return code
 
-    # --- 2. EXECUTION ENGINES ---
+                                  
     def execute(code, lang):
         try:
             if lang == "Python":
@@ -69,7 +69,7 @@ def run_test_case(original_code, refactored_code, test_input, language):
         except Exception as e:
             return f"Error: {str(e)}"
 
-    # --- 3. MAIN LOGIC ---
+                           
     ready_original = prepare_code(original_code, test_input, language)
     ready_refactored = prepare_code(refactored_code, test_input, language)
     
